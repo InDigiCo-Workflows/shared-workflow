@@ -41,6 +41,7 @@ jobs:
           DOCKER_BUILD_ARGS: ${{ inputs.docker_build_args }}
           REGISTRY: ${{ inputs.registry }}
         run: |
+          echo ${{ inputs.image_tag }}
           docker login $REGISTRY -u $username -p $password
           docker build --push -t $REGISTRY_IMAGE:$TAG $DOCKER_BUILD_ARGS .
           docker rmi $REGISTRY_IMAGE:$TAG
