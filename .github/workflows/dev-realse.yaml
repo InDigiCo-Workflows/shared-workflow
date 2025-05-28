@@ -16,12 +16,6 @@ on:
       project_name:
         required: true
         type: string
-      username:
-        required: true
-        type: string
-      password:
-        required: true
-        type: string
       image_tag:
         required: true
         type: string
@@ -36,8 +30,8 @@ jobs:
       - name: docker build 
         env:
           TAG: ${{ inputs.image_tag }}
-          username: ${{ inputs.username }}
-          password: ${{ inputs.password }}
+          username: ${{ secrets.NEXUS_USER }}
+          password: ${{ secrets.NEXUS_PASSWORD }}
           REGISTRY_IMAGE: ${{ inputs.registry_image }}
           DOCKER_BUILD_ARGS: ${{ inputs.docker_build_args }}
           REGISTRY: ${{ inputs.registry }}
