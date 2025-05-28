@@ -1,5 +1,10 @@
 on:
   workflow_call:
+    secrets:
+      NEXUS_USER:
+        required: true
+      NEXUS_PASSWORD:
+        required: true
     inputs:
       registry_image:
         required: true
