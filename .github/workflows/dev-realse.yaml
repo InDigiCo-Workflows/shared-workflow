@@ -56,8 +56,8 @@ jobs:
       - name: builld helm
         env:
           TAG: ${{ inputs.image_tag }}
-          username: ${{ inputs.username }}
-          password: ${{ inputs.password }}
+          username: ${{ secrets.NEXUS_USER }}
+          password: ${{ secrets.NEXUS_PASSWORD }}
           PROJECT_NAME: ${{ inputs.project_name }}
           HELM_REPO: ${{ inputs.helm_repo }}
         run: |
