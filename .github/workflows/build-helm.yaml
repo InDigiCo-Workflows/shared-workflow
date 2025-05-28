@@ -1,0 +1,40 @@
+on:
+  workflow_call:
+    secrets:
+      NEXUS_USER:
+        required: true
+      NEXUS_PASSWORD:
+        required: true
+    inputs:
+      runs-on:
+        type: string
+        default: 'runner-oracle-dev'
+        required: false
+      helm_repo:
+        required: true
+        type: string
+      project_name:
+        required: true
+        type: string
+      image_tag:
+        required: true
+        type: string
+
+jobs:
+  build-helm:
+    name: Build helm chart
+    runs-on: runner-oracle-dev
+    steps: 
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - name: builld helm
+        env:
+          TAG: ${{ inputs.image_tag }}
+          username: ${{ secrets.NEXUS_USER }}
+          password: ${{ secrets.NEXUS_PASSWORD }}
+          PROJECT_NAME: ${{ inputs.project_name }}
+          HELM_REPO: ${{ inputs.helm_repo }}
+        run: |
+          helm dependency update ./helm/$PROJECT_NAME/
+          helm package ./helm/$PROJECT_NAME/ --app-version $TAG --version $TAG
+          curl -u $username:$password $HELM_REPO --upload-file $PROJECT_NAME-$TAG.tgz
