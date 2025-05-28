@@ -21,6 +21,9 @@ on:
       project_name:
         required: true
         type: string
+      image_tag:
+        required: true
+        type: string
 
 jobs:
   build:
@@ -29,12 +32,9 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
-      - name: Set output
-        id: vars
-        run: echo "tag=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
       - name: docker build 
         env:
-          TAG: ${{ steps.vars.outputs.tag }}
+          TAG: ${{ inputs.image_tag }}
           username: ${{ secrets.NEXUS_USER }}
           password: ${{ secrets.NEXUS_PASSWORD }}
           REGISTRY_IMAGE: ${{ inputs.registry_image }}
@@ -52,12 +52,9 @@ jobs:
     steps: 
       - name: Check out the repo
         uses: actions/checkout@v3
-      - name: Set output
-        id: vars
-        run: echo "tag=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_OUTPUT
       - name: builld helm
         env:
-          TAG: ${{ steps.vars.outputs.tag }}
+          TAG: ${{ inputs.image_tag }}
           username: ${{ inputs.username }}
           password: ${{ inputs.password }}
           PROJECT_NAME: ${{ inputs.project_name }}
