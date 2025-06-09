@@ -23,7 +23,7 @@ on:
 jobs:
   build-helm:
     name: Build helm chart
-    runs-on: runner-oracle-dev
+    runs-on: ${{ inputs.runs-on }}
     steps: 
       - name: Check out the repo
         uses: actions/checkout@v3
